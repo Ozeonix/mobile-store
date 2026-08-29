@@ -1232,11 +1232,116 @@ img {
 
 /* =========================================================
    Customer Reviews Cards
+/* =========================================================
+   Customer Reviews Cards & Page Layout
 ========================================================= */
+.reviews-page-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: clamp(1.25rem, 3.5vw, 3rem);
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .reviews-page-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.reviews-summary-card {
+  background: var(--bg-card);
+  padding: var(--pad-card);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--shadow-sm);
+}
+
+.reviews-score-big {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(38px, 6vw, 54px);
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1;
+}
+
+.star-breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.star-breakdown-row {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 1.5vw, 12px);
+  font-size: clamp(12px, 0.9vw, 13px);
+}
+
+.star-breakdown-label {
+  width: 55px;
+  font-weight: 600;
+  color: var(--navy);
+  flex-shrink: 0;
+}
+
+.star-breakdown-bar-bg {
+  flex: 1;
+  height: 8px;
+  background: var(--gray-200);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.star-breakdown-bar-fill {
+  height: 100%;
+  background: #ffb703;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.star-breakdown-count {
+  width: 32px;
+  text-align: right;
+  color: var(--gray-500);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.rating-star-picker {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.rating-star-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #ffb703;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.rating-star-btn:hover {
+  transform: scale(1.15);
+}
+
 .reviews-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(clamp(260px, 28vw, 360px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(clamp(260px, 45vw, 360px), 1fr));
   gap: var(--gap-grid);
+}
+
+@media (max-width: 600px) {
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .review-card {
@@ -1247,6 +1352,13 @@ img {
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.review-card:hover {
+  border-color: var(--orange-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .review-header {
@@ -1254,6 +1366,8 @@ img {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .review-stars {
@@ -1300,6 +1414,7 @@ img {
   align-items: center;
   justify-content: center;
   font-size: 14px;
+  flex-shrink: 0;
 }
 
 .review-author-name {

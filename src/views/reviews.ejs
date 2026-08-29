@@ -1,12 +1,12 @@
 <!-- Reviews Landing Page -->
-<section class="section" style="background: var(--navy); padding: 3rem 1.5rem 2rem; color: #fff;">
+<section class="section" style="background: var(--navy); padding: clamp(2rem, 4vw, 3.5rem) 0 clamp(1.5rem, 3vw, 2.5rem); color: #fff;">
   <div class="container">
     <div class="section-eyebrow" style="color: var(--orange-light)">Verified Customer Feedback</div>
-    <h1 style="color:#fff; font-size: clamp(26px, 4vw, 36px); margin-bottom: 0.5rem;">
+    <h1 style="color:#fff; font-size: clamp(24px, 3.5vw, 36px); margin-bottom: 0.5rem;">
       Customer Reviews & Ratings
     </h1>
-    <p style="color: rgba(255,255,255,0.7); font-size: 14px; max-width: 600px;">
-      Read genuine reviews from customer visits to our Brookefield, AECS Layout mobile store. We pride ourselves on transparent pricing and friendly support.
+    <p style="color: rgba(255,255,255,0.75); font-size: clamp(13px, 1vw, 14.5px); max-width: 620px; line-height: 1.5;">
+      Read genuine reviews from customer visits to our Brookefield, AECS Layout mobile store. We pride ourselves on transparent pricing, top quality accessories, and friendly service.
     </p>
   </div>
 </section>
@@ -21,12 +21,12 @@
       </div>
     <% } %>
 
-    <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; margin-bottom: 4rem; align-items: start;">
+    <div class="reviews-page-layout">
       
       <!-- Rating Summary Breakdown -->
-      <div style="background: #fff; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm);">
-        <div style="text-align: center; margin-bottom: 2rem;">
-          <div style="font-family: 'Space Grotesk', sans-serif; font-size: 54px; font-weight: 800; color: var(--navy); line-height: 1;">
+      <div class="reviews-summary-card">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <div class="reviews-score-big">
             <%= averageRating %>
           </div>
           <div style="color: #ffb703; font-size: 20px; margin: 8px 0; display: flex; justify-content: center; gap: 4px;">
@@ -36,25 +36,25 @@
             <%- icon('starFilled', 20) %>
             <%- icon('starFilled', 20) %>
           </div>
-          <div style="font-size: 13.5px; color: var(--gray-500); font-weight: 500;">
+          <div style="font-size: clamp(12.5px, 0.9vw, 13.5px); color: var(--gray-500); font-weight: 500;">
             Based on <%= totalCount %> verified customer ratings
           </div>
-          <div style="display: inline-block; margin-top: 10px; background: rgba(37, 211, 102, 0.12); color: #167a39; padding: 4px 12px; border-radius: var(--radius-full); font-size: 12px; font-weight: 700;">
+          <div style="display: inline-block; margin-top: 10px; background: rgba(37, 211, 102, 0.12); color: #167a39; padding: 4px 12px; border-radius: 20px; font-size: 11.5px; font-weight: 700;">
             100% Recommended Store in AECS Layout
           </div>
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div class="star-breakdown-list">
           <% [5, 4, 3, 2, 1].forEach(star => { 
                const count = ratingCounts[star] || 0;
                const pct = totalCount > 0 ? Math.round((count / totalCount) * 100) : (star === 5 ? 100 : 0);
           %>
-            <div style="display: flex; align-items: center; gap: 10px; font-size: 13px;">
-              <span style="width: 55px; font-weight: 600;"><%= star %> Star</span>
-              <div style="flex: 1; height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden;">
-                <div style="height: 100%; width: <%= pct %>%; background: #ffb703; border-radius: 4px;"></div>
+            <div class="star-breakdown-row">
+              <span class="star-breakdown-label"><%= star %> Star</span>
+              <div class="star-breakdown-bar-bg">
+                <div class="star-breakdown-bar-fill" style="width: <%= pct %>%;"></div>
               </div>
-              <span style="width: 35px; text-align: right; color: var(--gray-500);"><%= count %></span>
+              <span class="star-breakdown-count"><%= count %></span>
             </div>
           <% }) %>
         </div>
@@ -63,8 +63,8 @@
       <!-- Write a Review Form -->
       <div class="form-card">
         <div class="section-eyebrow">Share Your Experience</div>
-        <h3 class="section-title" style="font-size: 20px; margin-bottom: 6px;">Leave a Store Review</h3>
-        <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 1.5rem;">
+        <h3 class="section-title" style="font-size: clamp(17px, 1.5vw, 20px); margin-bottom: 6px;">Leave a Store Review</h3>
+        <p style="font-size: clamp(12px, 0.9vw, 13px); color: var(--gray-500); margin-bottom: 1.25rem; line-height: 1.45;">
           Did you visit our showroom or get a tempered glass fitted? Let others know about your experience.
         </p>
 
@@ -77,12 +77,12 @@
           <div class="form-group">
             <label class="form-label">Your Rating</label>
             <input type="hidden" name="rating" id="rating_input" value="5">
-            <div id="star-rating-container" style="display: flex; gap: 6px; cursor: pointer;">
-              <button type="button" class="rating-star-btn" data-value="1" style="background:none; border:none; padding:0; cursor:pointer; color:#ffb703;"><%- icon('starFilled', 24) %></button>
-              <button type="button" class="rating-star-btn" data-value="2" style="background:none; border:none; padding:0; cursor:pointer; color:#ffb703;"><%- icon('starFilled', 24) %></button>
-              <button type="button" class="rating-star-btn" data-value="3" style="background:none; border:none; padding:0; cursor:pointer; color:#ffb703;"><%- icon('starFilled', 24) %></button>
-              <button type="button" class="rating-star-btn" data-value="4" style="background:none; border:none; padding:0; cursor:pointer; color:#ffb703;"><%- icon('starFilled', 24) %></button>
-              <button type="button" class="rating-star-btn" data-value="5" style="background:none; border:none; padding:0; cursor:pointer; color:#ffb703;"><%- icon('starFilled', 24) %></button>
+            <div id="star-rating-container" class="rating-star-picker">
+              <button type="button" class="rating-star-btn" data-value="1"><%- icon('starFilled', 22) %></button>
+              <button type="button" class="rating-star-btn" data-value="2"><%- icon('starFilled', 22) %></button>
+              <button type="button" class="rating-star-btn" data-value="3"><%- icon('starFilled', 22) %></button>
+              <button type="button" class="rating-star-btn" data-value="4"><%- icon('starFilled', 22) %></button>
+              <button type="button" class="rating-star-btn" data-value="5"><%- icon('starFilled', 22) %></button>
             </div>
           </div>
 
@@ -101,15 +101,15 @@
 
     <!-- All Reviews List -->
     <div>
-      <h2 style="font-size: 22px; margin-bottom: 1.5rem;">Recent Customer Testimonials</h2>
+      <h2 style="font-size: clamp(18px, 2vw, 24px); margin-bottom: 1.25rem; color: var(--navy);">Recent Customer Testimonials</h2>
       <div class="reviews-grid">
         <% if (reviews && reviews.length > 0) { %>
           <% reviews.forEach(rev => { %>
             <div class="review-card">
               <div class="review-header">
-                <div class="review-stars" style="display: flex; gap: 2px;">
+                <div class="review-stars">
                   <% for(let i=0; i<rev.rating; i++) { %>
-                    <%- icon('starFilled', 15) %>
+                    <%- icon('starFilled', 14) %>
                   <% } %>
                 </div>
                 <span class="review-source"><%= rev.source || 'Google Review' %></span>
