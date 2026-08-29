@@ -1,0 +1,73 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom: 1rem;">
+          <div class="brand-icon">
+            <%- icon('zap', 20) %>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title" style="font-size: 18px;">TECH TALK <span>MOBILE</span></span>
+            <span class="brand-sub">AECS LAYOUT · BROOKEFIELD</span>
+          </div>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.6; max-width: 320px; margin-bottom: 1.5rem; color: rgba(255,255,255,0.7);">
+          Bangalore's premium mobile accessories destination. Edge-to-edge tempered glass, certified fast chargers, MagSafe covers, and audio gear with free in-store fitting.
+        </p>
+        <div style="display: flex; gap: 8px;">
+          <a href="https://wa.me/<%= settings.store_whatsapp || '919876543210' %>" class="btn btn-whatsapp btn-sm" target="_blank" rel="noopener">
+            <%- icon('whatsapp', 14) %> WhatsApp Support
+          </a>
+          <a href="tel:<%= (settings.store_phone || '+919876543210').replace(/\s+/g, '') %>" class="btn btn-orange btn-sm">
+            <%- icon('phone', 14) %> Call Store
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Categories</h4>
+        <ul class="footer-links">
+          <li><a href="/category/screen-protectors">Screen Protectors</a></li>
+          <li><a href="/category/cases-covers">Cases and Covers</a></li>
+          <li><a href="/category/fast-chargers">Fast Chargers</a></li>
+          <li><a href="/category/audio-tws">Audio and TWS Earbuds</a></li>
+          <li><a href="/category/power-banks">Power Banks</a></li>
+          <li><a href="/category/car-accessories">Car Accessories</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/products">All Products</a></li>
+          <li><a href="/reviews">Customer Reviews</a></li>
+          <li><a href="/contact">Store Location & Directions</a></li>
+          <li><a href="/admin">Staff Admin Portal</a></li>
+          <li><a href="/api/health" target="_blank">System Health API</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Store Hours & Location</h4>
+        <p style="font-size: 13px; margin-bottom: 8px; color: #fff; display: flex; gap: 6px; align-items: flex-start;">
+          <span style="color: var(--orange);"><%- icon('mapPin', 16) %></span>
+          <span><%= settings.store_address || 'Opposite Kanti Sweets, B Block, AECS Layout, Brookefield, Bengaluru – 560037' %></span>
+        </p>
+        <p style="font-size: 13px; margin-bottom: 12px; display: flex; gap: 6px; align-items: center;">
+          <span style="color: var(--teal);"><%- icon('clock', 16) %></span>
+          <span><%= settings.store_hours || 'Mon – Sat · 9:00 AM – 8:00 PM' %></span>
+        </p>
+        <a href="<%= settings.google_maps_url || 'https://maps.google.com/?q=AECS+Layout+Brookefield+Bengaluru+opposite+Kanti+Sweets' %>"
+           target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="width: 100%; text-align: center;">
+          <%- icon('mapPin', 14) %> Open in Google Maps
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© <%= currentYear %> Tech Talk Mobile. All rights reserved.</div>
+      <div>Designed for AECS Layout, Brookefield, Bengaluru</div>
+    </div>
+  </div>
+</footer>

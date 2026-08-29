@@ -1,0 +1,66 @@
+<section class="section" style="background: var(--navy); padding: 2.5rem 1.5rem; color: #fff;">
+  <div class="container">
+    <div style="font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem;">
+      <a href="/admin" style="color: rgba(255,255,255,0.7);">Dashboard</a> / Reviews
+    </div>
+    <h1 style="color:#fff; font-size: 26px;">Customer Reviews Management</h1>
+    <p style="font-size: 13.5px; color: rgba(255,255,255,0.7);">Audit and manage customer feedback displayed on the website.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <% if (typeof successMsg !== 'undefined' && successMsg) { %>
+      <div class="alert alert-success">
+        <span style="display:inline-flex; align-items:center; gap:6px;">
+          <%- icon('check', 16) %> <%= successMsg %>
+        </span>
+      </div>
+    <% } %>
+
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Author</th>
+            <th>Rating</th>
+            <th>Comment</th>
+            <th>Source</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (reviews && reviews.length > 0) { %>
+            <% reviews.forEach(rev => { %>
+              <tr>
+                <td><strong><%= rev.author_name %></strong></td>
+                <td>
+                  <div style="color: #ffb703; display: flex; gap: 2px;">
+                    <% for (let i = 0; i < rev.rating; i++) { %>
+                      <%- icon('starFilled', 14) %>
+                    <% } %>
+                  </div>
+                </td>
+                <td style="max-width: 320px; font-size: 13px; line-height: 1.4;"><%= rev.comment %></td>
+                <td><span class="badge badge-new" style="font-size: 11px;"><%= rev.source || 'Google Review' %></span></td>
+                <td style="font-size: 12px; color: var(--gray-500);"><%= rev.review_date || 'Recent' %></td>
+                <td>
+                  <form action="/admin/reviews/delete/<%= rev.id %>" method="POST" onsubmit="return confirm('Delete this review?');">
+                    <button type="submit" class="btn btn-sm" style="background: #ffe3e3; color: #c92a2a; border: 1px solid #f5c2c7;" title="Delete Review">
+                      <%- icon('trash', 14) %> Delete
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 2.5rem; color: var(--gray-500);">No reviews recorded yet.</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

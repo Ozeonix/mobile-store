@@ -1,0 +1,78 @@
+<section class="section" style="background: var(--navy); padding: 2.5rem 1.5rem; color: #fff;">
+  <div class="container">
+    <div style="font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem;">
+      <a href="/admin" style="color: rgba(255,255,255,0.7);">Dashboard</a> / Settings
+    </div>
+    <h1 style="color:#fff; font-size: 26px;">Store Contact & Hours Settings</h1>
+    <p style="font-size: 13.5px; color: rgba(255,255,255,0.7);">Configure live telephone numbers, WhatsApp contact, hours, and store location in real time.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" style="max-width: 760px;">
+    <% if (typeof successMsg !== 'undefined' && successMsg) { %>
+      <div class="alert alert-success">
+        <span style="display:inline-flex; align-items:center; gap:6px;">
+          <%- icon('check', 16) %> <%= successMsg %>
+        </span>
+      </div>
+    <% } %>
+
+    <div class="form-card">
+      <form action="/admin/settings" method="POST">
+        <div class="form-group">
+          <label class="form-label" for="store_name">
+            <%- icon('tag', 14) %> Store Brand Name
+          </label>
+          <input type="text" id="store_name" name="store_name" class="form-input" 
+                 value="<%= settings.store_name || 'Tech Talk Mobile' %>" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="form-group">
+            <label class="form-label" for="store_phone">
+              <%- icon('phone', 14) %> Phone Number (Direct Calling)
+            </label>
+            <input type="text" id="store_phone" name="store_phone" class="form-input" 
+                   value="<%= settings.store_phone || '+919876543210' %>" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="store_whatsapp">
+              <%- icon('whatsapp', 14) %> WhatsApp Number (Digits only with Country Code)
+            </label>
+            <input type="text" id="store_whatsapp" name="store_whatsapp" class="form-input" 
+                   value="<%= settings.store_whatsapp || '919876543210' %>" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="store_address">
+            <%- icon('mapPin', 14) %> Physical Showroom Address
+          </label>
+          <textarea id="store_address" name="store_address" class="form-textarea" required><%= settings.store_address || 'Opposite Kanti Sweets, B Block, AECS Layout, Brookefield, Bengaluru – 560037' %></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="store_hours">
+            <%- icon('clock', 14) %> Store Opening Hours
+          </label>
+          <input type="text" id="store_hours" name="store_hours" class="form-input" 
+                 value="<%= settings.store_hours || 'Mon – Sat · 9:00 AM – 8:00 PM' %>" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="google_maps_url">
+            <%- icon('mapPin', 14) %> Google Maps Location URL
+          </label>
+          <input type="url" id="google_maps_url" name="google_maps_url" class="form-input" 
+                 value="<%= settings.google_maps_url || 'https://maps.google.com/?q=AECS+Layout+Brookefield+Bengaluru+opposite+Kanti+Sweets' %>" required>
+        </div>
+
+        <button type="submit" class="btn btn-orange" style="width: 100%;">
+          <%- icon('check', 16) %> Save Real-Time Store Settings
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

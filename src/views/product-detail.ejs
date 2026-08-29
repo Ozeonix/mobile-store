@@ -1,0 +1,157 @@
+<!-- Product Breadcrumb & Header -->
+<section class="section detail-header-section">
+  <div class="container">
+    <div class="breadcrumb-trail">
+      <a href="/">Home</a> / 
+      <a href="/products">Products</a> / 
+      <span class="breadcrumb-current"><%= product.name %></span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="product-detail-card">
+      
+      <!-- Product Showcase Image -->
+      <div class="detail-media-wrap">
+        <% if (product.badge) { %>
+          <div class="product-badge-pos">
+            <span class="badge badge-<%= product.badge.toLowerCase() %>"><%= product.badge %></span>
+          </div>
+        <% } %>
+        <img src="<%= product.image_url || '/images/hero-banner.png' %>" 
+             alt="<%= product.name %>" 
+             class="detail-product-img" 
+             loading="eager"
+             fetchpriority="high">
+        
+        <div class="detail-badge-footer">
+          <span class="stock-indicator <%= product.in_stock ? 'in-stock' : 'out-stock' %>">
+            <span class="stock-dot"></span>
+            <span><%= product.in_stock ? 'Verified In-Stock at Showroom' : 'Available for Order' %></span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Product Information -->
+      <div class="detail-info-wrap">
+        <div class="detail-category-eyebrow">
+          <%- icon('tag', 14) %> <%= product.category_name || 'Mobile Accessory' %>
+        </div>
+        
+        <h1 class="detail-product-title"><%= product.name %></h1>
+
+        <!-- Price Section with Savings Calculation -->
+        <div class="detail-price-box">
+          <div class="detail-price-main">
+            <span class="detail-price-current">₹<%= Number(product.price).toLocaleString('en-IN') %></span>
+            <% if (product.original_price && Number(product.original_price) > Number(product.price)) { %>
+              <span class="detail-price-original">₹<%= Number(product.original_price).toLocaleString('en-IN') %></span>
+              <% const discount = Math.round(((Number(product.original_price) - Number(product.price)) / Number(product.original_price)) * 100); %>
+              <span class="badge badge-sale">Save ₹<%= Number(product.original_price) - Number(product.price) %> (<%= discount %>% OFF)</span>
+            <% } %>
+          </div>
+          <div class="detail-mrp-label">Inclusive of all local taxes · Free In-Store Fitting Included</div>
+        </div>
+
+        <div class="detail-description">
+          <p><%= product.description %></p>
+        </div>
+
+        <!-- Specifications Breakdown Table / Grid -->
+        <% if (product.specs && Object.keys(product.specs).length > 0) { %>
+          <div class="detail-specs-card">
+            <h4 class="specs-card-title">
+              <%- icon('layers', 16) %> Specifications & Compatibility
+            </h4>
+            <div class="specs-grid">
+              <% Object.entries(product.specs).forEach(([k, v]) => { %>
+                <div class="spec-item">
+                  <span class="spec-key"><%= k %></span>
+                  <span class="spec-val"><%= v %></span>
+                </div>
+              <% }) %>
+            </div>
+          </div>
+        <% } %>
+
+        <!-- WhatsApp Quick Booking Actions -->
+        <div class="detail-action-group">
+          <a href="https://wa.me/<%= settings.store_whatsapp || '919876543210' %>?text=<%= encodeURIComponent('Hi Tech Talk Mobile! I want to check availability and buy: ' + product.name + ' (₹' + product.price + ') for my phone model.') %>"
+             class="btn btn-whatsapp btn-lg detail-wa-btn" 
+             target="_blank" 
+             rel="noopener"
+             id="detail-whatsapp-action">
+            <%- icon('whatsapp', 20) %> Inquire & Reserve on WhatsApp
+          </a>
+
+          <a href="tel:<%= (settings.store_phone || '+919876543210').replace(/\s+/g, '') %>" 
+             class="btn btn-outline-dark btn-lg detail-call-btn"
+             id="detail-call-action">
+            <%- icon('phone', 16) %> Call Store (<%= settings.store_phone || '+91 98765 43210' %>)
+          </a>
+        </div>
+
+        <!-- Store Assurance Box -->
+        <div class="detail-assurance-banner">
+          <div class="assurance-header">
+            <span class="assurance-icon"><%- icon('shield', 18) %></span>
+            <strong>Free Professional In-Store Installation</strong>
+          </div>
+          <p class="assurance-text">
+            Visit our AECS Layout showroom opposite Kanti Sweets for complimentary fitting by our technicians. Zero air bubbles, perfect edge alignment.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products Showcase -->
+    <% if (relatedProducts && relatedProducts.length > 0) { %>
+      <div class="related-products-section">
+        <div class="section-header-flex">
+          <div>
+            <div class="section-eyebrow">Complete Your Protection Setup</div>
+            <h3 class="section-title" style="font-size: 22px;">Related Accessories</h3>
+          </div>
+          <a href="/products" class="view-all-link">Browse All <%- icon('arrowRight', 12) %></a>
+        </div>
+
+        <div class="product-grid">
+          <% relatedProducts.forEach(rel => { %>
+            <div class="product-card">
+              <div class="product-img-wrap">
+                <a href="/products/<%= rel.slug || rel.id %>">
+                  <img src="<%= rel.image_url || '/images/hero-banner.png' %>" alt="<%= rel.name %>" loading="lazy" class="product-thumb">
+                </a>
+              </div>
+              <div class="product-body">
+                <h4 class="product-name">
+                  <a href="/products/<%= rel.slug || rel.id %>"><%= rel.name %></a>
+                </h4>
+                <div class="product-price-row">
+                  <span class="price-current">₹<%= Number(rel.price).toLocaleString('en-IN') %></span>
+                </div>
+                <a href="/products/<%= rel.slug || rel.id %>" class="btn btn-outline btn-sm" style="width: 100%;">View Accessory</a>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<!-- Mobile Sticky Bottom Action Bar for 1-Tap Conversion -->
+<div class="mobile-sticky-pdp-bar">
+  <div class="sticky-pdp-price">
+    <span class="sticky-price-label">Price</span>
+    <span class="sticky-price-val">₹<%= Number(product.price).toLocaleString('en-IN') %></span>
+  </div>
+  <a href="https://wa.me/<%= settings.store_whatsapp || '919876543210' %>?text=<%= encodeURIComponent('Hi Tech Talk Mobile! I want to buy ' + product.name + ' (₹' + product.price + ') at your AECS Layout store.') %>"
+     class="btn btn-whatsapp sticky-pdp-btn"
+     target="_blank"
+     rel="noopener">
+    <%- icon('whatsapp', 18) %> <span>Inquire on WhatsApp</span>
+  </a>
+</div>

@@ -1,0 +1,112 @@
+<section class="section" style="background: var(--navy); padding: 2.5rem 1.5rem; color: #fff;">
+  <div class="container">
+    <div style="font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem;">
+      <a href="/admin" style="color: rgba(255,255,255,0.7);">Dashboard</a> / Categories
+    </div>
+    <h1 style="color:#fff; font-size: 26px;">Category Management</h1>
+    <p style="font-size: 13.5px; color: rgba(255,255,255,0.7);">Organize and categorize your smartphone accessories collection.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <% if (typeof successMsg !== 'undefined' && successMsg) { %>
+      <div class="alert alert-success">
+        <span style="display:inline-flex; align-items:center; gap:6px;">
+          <%- icon('check', 16) %> <%= successMsg %>
+        </span>
+      </div>
+    <% } %>
+
+    <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 2.5rem; align-items: start;">
+      <!-- Add Category Form -->
+      <div class="form-card">
+        <h3 style="font-size: 18px; margin-bottom: 1.25rem; font-weight: 700; color: var(--navy);">Add New Category</h3>
+        <form action="/admin/categories/new" method="POST">
+          <div class="form-group">
+            <label class="form-label" for="name">Category Name *</label>
+            <input type="text" id="name" name="name" class="form-input" placeholder="e.g. Wireless Chargers" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="icon">Category Embedded Icon *</label>
+            <select id="icon" name="icon" class="form-select" required>
+              <option value="smartphone">Smartphone</option>
+              <option value="shield">Shield (Protection)</option>
+              <option value="zap">Zap (Charging / Power)</option>
+              <option value="headphones">Headphones (Audio / TWS)</option>
+              <option value="battery">Battery (Power Banks)</option>
+              <option value="car">Car (Automotive)</option>
+              <option value="cable">Cable (Wires / Adapters)</option>
+              <option value="watch">Watch (Smartwatch)</option>
+              <option value="box">Box (General)</option>
+              <option value="tag">Tag (Deals)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="description">Short Description</label>
+            <textarea id="description" name="description" class="form-textarea" placeholder="Describe the accessories in this collection..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="image_url">Cover Image URL</label>
+            <input type="url" id="image_url" name="image_url" class="form-input" placeholder="https://images.unsplash.com/...">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="display_order">Display Order</label>
+            <input type="number" id="display_order" name="display_order" class="form-input" value="10">
+          </div>
+
+          <button type="submit" class="btn btn-orange" style="width: 100%;">
+            <%- icon('plus', 16) %> Create Category
+          </button>
+        </form>
+      </div>
+
+      <!-- Categories List Table -->
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">Icon</th>
+              <th>Category Name</th>
+              <th>Slug</th>
+              <th>Order</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (categories && categories.length > 0) { %>
+              <% categories.forEach(cat => { %>
+                <tr>
+                  <td style="color: var(--orange);">
+                    <%- icon(cat.icon || 'smartphone', 22) %>
+                  </td>
+                  <td>
+                    <strong><%= cat.name %></strong>
+                    <div style="font-size: 11.5px; color: var(--gray-500);"><%= cat.description %></div>
+                  </td>
+                  <td><code><%= cat.slug %></code></td>
+                  <td><%= cat.display_order %></td>
+                  <td>
+                    <form action="/admin/categories/delete/<%= cat.id %>" method="POST" onsubmit="return confirm('Delete this category? Products in this category will not be deleted.');">
+                      <button type="submit" class="btn btn-sm" style="background: #ffe3e3; color: #c92a2a; border: 1px solid #f5c2c7;" title="Delete Category">
+                        <%- icon('trash', 14) %>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="5" style="text-align: center; padding: 2rem; color: var(--gray-500);">No categories created yet.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,60 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: techtalk_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-techtalk_db}
+      POSTGRES_USER: ${DB_USER:-techtalk_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-techtalk_secure_password}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-techtalk_user} -d ${DB_NAME:-techtalk_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - techtalk_net
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: techtalk_app
+    restart: unless-stopped
+    environment:
+      PORT: 3000
+      NODE_ENV: development
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-techtalk_db}
+      DB_USER: ${DB_USER:-techtalk_user}
+      DB_PASSWORD: ${DB_PASSWORD:-techtalk_secure_password}
+      STORE_NAME: ${STORE_NAME:-Tech Talk Mobile}
+      STORE_PHONE: ${STORE_PHONE:-+919876543210}
+      STORE_WHATSAPP: ${STORE_WHATSAPP:-919876543210}
+      STORE_ADDRESS: ${STORE_ADDRESS:-Opposite Kanti Sweets, B Block, AECS Layout, Brookefield, Bengaluru – 560037}
+      STORE_HOURS: ${STORE_HOURS:-Mon – Sat · 9:00 AM – 8:00 PM}
+      GOOGLE_MAPS_URL: ${GOOGLE_MAPS_URL:-https://maps.google.com/?q=AECS+Layout+Brookefield+Bengaluru+opposite+Kanti+Sweets}
+      ADMIN_SECRET: ${ADMIN_SECRET:-admin123}
+    volumes:
+      - ./src:/usr/src/app/src
+      - ./public:/usr/src/app/public
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - techtalk_net
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  techtalk_net:
+    driver: bridge

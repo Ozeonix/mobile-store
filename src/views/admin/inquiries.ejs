@@ -1,0 +1,82 @@
+<section class="section" style="background: var(--navy); padding: 2.5rem 1.5rem; color: #fff;">
+  <div class="container">
+    <div style="font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem;">
+      <a href="/admin" style="color: rgba(255,255,255,0.7);">Dashboard</a> / Inquiries
+    </div>
+    <h1 style="color:#fff; font-size: 26px;">Customer Inquiries & Leads</h1>
+    <p style="font-size: 13.5px; color: rgba(255,255,255,0.7);">Track customer questions, phone model checks, and bulk purchase inquiries.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <% if (typeof successMsg !== 'undefined' && successMsg) { %>
+      <div class="alert alert-success">
+        <span style="display:inline-flex; align-items:center; gap:6px;">
+          <%- icon('check', 16) %> <%= successMsg %>
+        </span>
+      </div>
+    <% } %>
+
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>WhatsApp Contact</th>
+            <th>Product / Subject</th>
+            <th>Message</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (inquiries && inquiries.length > 0) { %>
+            <% inquiries.forEach(inq => { %>
+              <tr>
+                <td style="font-size: 12px; color: var(--gray-500); white-space: nowrap;">
+                  <%= inq.created_at ? new Date(inq.created_at).toLocaleDateString() : 'Recent' %>
+                </td>
+                <td><strong><%= inq.customer_name %></strong></td>
+                <td>
+                  <a href="https://wa.me/<%= inq.phone.replace(/[^0-9]/g, '') %>?text=Hi%20<%= encodeURIComponent(inq.customer_name) %>!%20Replying%20to%20your%20inquiry%20at%20Tech%20Talk%20Mobile."
+                     target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm" style="padding: 4px 10px; font-size: 12px;">
+                    <%- icon('whatsapp', 14) %> <%= inq.phone %>
+                  </a>
+                </td>
+                <td><strong><%= inq.product_name || 'General Inquiry' %></strong></td>
+                <td style="max-width: 250px; font-size: 12.5px; line-height: 1.4;"><%= inq.message %></td>
+                <td>
+                  <span class="badge <%= inq.status === 'resolved' ? 'badge-new' : 'badge-hot' %>">
+                    <%= inq.status %>
+                  </span>
+                </td>
+                <td>
+                  <div style="display: flex; gap: 6px;">
+                    <form action="/admin/inquiries/<%= inq.id %>/toggle" method="POST" style="display:inline;">
+                      <button type="submit" class="btn btn-outline-dark btn-sm" title="Toggle Status">
+                        <%- icon('check', 12) %> <%= inq.status === 'resolved' ? 'Reopen' : 'Resolve' %>
+                      </button>
+                    </form>
+                    <form action="/admin/inquiries/delete/<%= inq.id %>" method="POST" onsubmit="return confirm('Delete this inquiry record?');" style="display:inline;">
+                      <button type="submit" class="btn btn-sm" style="background: #ffe3e3; color: #c92a2a; border: 1px solid #f5c2c7;" title="Delete Lead">
+                        <%- icon('trash', 12) %>
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--gray-500);">
+                No customer inquiries logged yet. All leads are clear.
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

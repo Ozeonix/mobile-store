@@ -1,0 +1,30 @@
+{
+  "name": "tech-talk-mobile",
+  "version": "1.0.0",
+  "description": "Tech Talk Mobile - Mobile store in AECS Layout, Brookefield, Bengaluru",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "migrate": "node -e \"require('./src/db/migrate').migrate()\"",
+    "seed": "node -e \"require('./src/db/seed').seed(true)\""
+  },
+  "keywords": [
+    "mobile-store",
+    "express",
+    "postgresql",
+    "ejs"
+  ],
+  "author": "Tech Talk Mobile",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-ejs-layouts": "^2.5.1",
+    "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

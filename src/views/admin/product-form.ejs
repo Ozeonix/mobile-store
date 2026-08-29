@@ -1,0 +1,172 @@
+<section class="section" style="background: var(--navy); padding: 2.5rem 1.5rem; color: #fff;">
+  <div class="container">
+    <div style="font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem;">
+      <a href="/admin" style="color: rgba(255,255,255,0.7);">Dashboard</a> / 
+      <a href="/admin/products" style="color: rgba(255,255,255,0.7);">Products</a> / 
+      <%= product ? 'Edit Product' : 'Add New Accessory' %>
+    </div>
+    <h1 style="color:#fff; font-size: 26px;">
+      <%= product ? `Edit: ${product.name}` : 'Add New Accessory to Inventory' %>
+    </h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" style="max-width: 860px;">
+    <div class="form-card">
+      <form action="<%= product ? `/admin/products/edit/${product.id}` : '/admin/products/new' %>" method="POST" id="productAdminForm">
+        
+        <div class="form-group">
+          <label class="form-label" for="name">Product Name *</label>
+          <input type="text" id="name" name="name" class="form-input" 
+                 value="<%= product ? product.name : '' %>" 
+                 placeholder="e.g. 11D Curved Edge Tempered Glass" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="form-group">
+            <label class="form-label" for="category_id">Category *</label>
+            <select id="category_id" name="category_id" class="form-select" required>
+              <% if (categories) { %>
+                <% categories.forEach(c => { %>
+                  <option value="<%= c.id %>" <%= (product && product.category_id === c.id) ? 'selected' : '' %>>
+                    <%= c.name %>
+                  </option>
+                <% }) %>
+              <% } %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="badge">Promotional Badge</label>
+            <select id="badge" name="badge" class="form-select">
+              <option value="" <%= (!product || !product.badge) ? 'selected' : '' %>>None</option>
+              <option value="BESTSELLER" <%= (product && product.badge === 'BESTSELLER') ? 'selected' : '' %>>BESTSELLER</option>
+              <option value="HOT" <%= (product && product.badge === 'HOT') ? 'selected' : '' %>>HOT</option>
+              <option value="NEW" <%= (product && product.badge === 'NEW') ? 'selected' : '' %>>NEW</option>
+              <option value="SALE" <%= (product && product.badge === 'SALE') ? 'selected' : '' %>>SALE</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="form-group">
+            <label class="form-label" for="price">Selling Price (₹) *</label>
+            <input type="number" step="0.01" id="price" name="price" class="form-input" 
+                   value="<%= product ? product.price : '' %>" placeholder="299" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="original_price">Original Price / MRP (₹)</label>
+            <input type="number" step="0.01" id="original_price" name="original_price" class="form-input" 
+                   value="<%= product ? (product.original_price || '') : '' %>" placeholder="599">
+          </div>
+        </div>
+
+        <!-- Image URL with Live Preview -->
+        <div class="form-group">
+          <label class="form-label" for="image_url">Product Image URL</label>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <input type="url" id="image_url" name="image_url" class="form-input" 
+                   value="<%= product ? (product.image_url || '') : '' %>" 
+                   placeholder="https://images.unsplash.com/..." 
+                   oninput="document.getElementById('img_preview').src = this.value || 'https://images.unsplash.com/photo-1580910051074-3eb694886505?w=600&auto=format&fit=crop&q=80'">
+            <img id="img_preview" 
+                 src="<%= product && product.image_url ? product.image_url : 'https://images.unsplash.com/photo-1580910051074-3eb694886505?w=600&auto=format&fit=crop&q=80' %>" 
+                 alt="Preview" 
+                 style="width: 48px; height: 48px; object-fit: cover; border-radius: 8px; border: 1px solid var(--gray-300);">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="description">Product Description</label>
+          <textarea id="description" name="description" class="form-textarea" 
+                    placeholder="Detailed product overview, features, material, and compatibility..."><%= product ? product.description : '' %></textarea>
+        </div>
+
+        <!-- Dynamic Specifications Builder -->
+        <div class="form-group" style="background: var(--gray-100); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--gray-300);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <label class="form-label" style="margin-bottom: 0; font-weight: 700; color: var(--navy);">
+              <%- icon('layers', 16) %> Specifications & Attributes
+            </label>
+            <button type="button" class="btn btn-outline-dark btn-sm" id="addSpecBtn">
+              <%- icon('plus', 12) %> Add Field
+            </button>
+          </div>
+
+          <div id="specRowsContainer" style="display: flex; flex-direction: column; gap: 8px;">
+            <% if (product && product.specs && Object.keys(product.specs).length > 0) { %>
+              <% Object.entries(product.specs).forEach(([k, v]) => { %>
+                <div class="spec-row" style="display: flex; gap: 8px; align-items: center;">
+                  <input type="text" name="spec_keys" class="form-input" style="flex: 1; padding: 8px 12px; font-size: 13px;" value="<%= k %>" placeholder="Attribute (e.g. Hardness)">
+                  <input type="text" name="spec_values" class="form-input" style="flex: 1.5; padding: 8px 12px; font-size: 13px;" value="<%= v %>" placeholder="Value (e.g. 9H Sapphire)">
+                  <button type="button" class="btn btn-sm remove-spec-btn" style="background: #ffe3e3; color: #c92a2a; border: none; padding: 8px 10px;">
+                    <%- icon('x', 12) %>
+                  </button>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div class="spec-row" style="display: flex; gap: 8px; align-items: center;">
+                <input type="text" name="spec_keys" class="form-input" style="flex: 1; padding: 8px 12px; font-size: 13px;" value="Compatibility" placeholder="Attribute">
+                <input type="text" name="spec_values" class="form-input" style="flex: 1.5; padding: 8px 12px; font-size: 13px;" value="iPhone, Samsung, OnePlus, Pixel" placeholder="Value">
+                <button type="button" class="btn btn-sm remove-spec-btn" style="background: #ffe3e3; color: #c92a2a; border: none; padding: 8px 10px;">
+                  <%- icon('x', 12) %>
+                </button>
+              </div>
+            <% } %>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 2rem; margin-bottom: 2rem;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; font-weight: 500;">
+            <input type="checkbox" name="in_stock" <%= (!product || product.in_stock) ? 'checked' : '' %>>
+            In Stock (Available for WhatsApp / In-Store Order)
+          </label>
+
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; font-weight: 500;">
+            <input type="checkbox" name="is_featured" <%= (product && product.is_featured) ? 'checked' : '' %>>
+            Feature on Homepage
+          </label>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+          <button type="submit" class="btn btn-orange" style="flex: 1;">
+            <%- icon('check', 16) %> <%= product ? 'Save Changes' : 'Create Accessory' %>
+          </button>
+          <a href="/admin/products" class="btn btn-outline-dark" style="flex: 1; text-align: center;">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.getElementById('addSpecBtn').addEventListener('click', () => {
+    const container = document.getElementById('specRowsContainer');
+    const row = document.createElement('div');
+    row.className = 'spec-row';
+    row.style.display = 'flex';
+    row.style.gap = '8px';
+    row.style.alignItems = 'center';
+    row.innerHTML = `
+      <input type="text" name="spec_keys" class="form-input" style="flex: 1; padding: 8px 12px; font-size: 13px;" placeholder="Attribute Name">
+      <input type="text" name="spec_values" class="form-input" style="flex: 1.5; padding: 8px 12px; font-size: 13px;" placeholder="Value">
+      <button type="button" class="btn btn-sm remove-spec-btn" style="background: #ffe3e3; color: #c92a2a; border: none; padding: 8px 10px;">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    `;
+    container.appendChild(row);
+  });
+
+  document.getElementById('specRowsContainer').addEventListener('click', (e) => {
+    if (e.target.closest('.remove-spec-btn')) {
+      const row = e.target.closest('.spec-row');
+      if (document.querySelectorAll('.spec-row').length > 1) {
+        row.remove();
+      } else {
+        row.querySelectorAll('input').forEach(inp => inp.value = '');
+      }
+    }
+  });
+</script>

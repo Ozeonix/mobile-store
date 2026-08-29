@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="theme-color" content="#0f0f23">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <title><%= title || 'Tech Talk Mobile — Premium Mobile Accessories in AECS Layout, Brookefield' %></title>
+  <meta name="description" content="Shop premium mobile accessories in AECS Layout, Brookefield, Bengaluru. 11D Tempered Glass, MagSafe Cases, GaN Fast Chargers, TWS Audio & Free fitting.">
+  
+  <!-- Modern Fonts Preload -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <%- style %>
+</head>
+<body>
+
+  <!-- Top Announcement Banner (Desktop/Tablet) -->
+  <%- include('../partials/banner') %>
+
+  <!-- Navigation Bar (Desktop & Mobile Header) -->
+  <%- include('../partials/nav') %>
+
+  <!-- Main View Content -->
+  <main class="page-main">
+    <%- body %>
+  </main>
+
+  <!-- Footer -->
+  <%- include('../partials/footer') %>
+
+  <!-- Desktop Floating WhatsApp Action -->
+  <%- include('../partials/wa-float') %>
+
+  <!-- Mobile App-like Bottom Navigation Bar -->
+  <%- include('../partials/mobile-nav') %>
+
+  <!-- Core JavaScript -->
+  <script src="/js/main.js"></script>
+  <%- script %>
+</body>
+</html>

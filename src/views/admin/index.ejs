@@ -1,0 +1,140 @@
+<section class="section" style="background: var(--navy); padding: 2.5rem 1.5rem; color: #fff;">
+  <div class="container">
+    <div class="section-eyebrow" style="color: var(--orange-light)">Store Administration</div>
+    <h1 style="color:#fff; font-size: 28px; margin-bottom: 0.5rem;">Tech Talk Mobile Management Portal</h1>
+    <div style="display: flex; gap: 10px; margin-top: 1rem; flex-wrap: wrap;">
+      <a href="/admin/products" class="btn btn-orange btn-sm">
+        <%- icon('box', 14) %> Inventory Products
+      </a>
+      <a href="/admin/products/new" class="btn btn-outline btn-sm">
+        <%- icon('plus', 14) %> Add Product
+      </a>
+      <a href="/admin/categories" class="btn btn-outline btn-sm">
+        <%- icon('grid', 14) %> Categories
+      </a>
+      <a href="/admin/inquiries" class="btn btn-outline btn-sm">
+        <%- icon('messageSquare', 14) %> Customer Leads (<%= stats.inquiries %>)
+      </a>
+      <a href="/admin/reviews" class="btn btn-outline btn-sm">
+        <%- icon('star', 14) %> Reviews (<%= stats.reviews %>)
+      </a>
+      <a href="/admin/settings" class="btn btn-outline btn-sm">
+        <%- icon('settings', 14) %> Store Settings
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <% if (typeof successMsg !== 'undefined' && successMsg) { %>
+      <div class="alert alert-success">
+        <span style="display:inline-flex; align-items:center; gap:6px;">
+          <%- icon('check', 16) %> <%= successMsg %>
+        </span>
+      </div>
+    <% } %>
+
+    <!-- Quick Stats Metric Cards -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+      <div class="stat-card-admin">
+        <div style="color: var(--orange); background: var(--orange-subtle); width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+          <%- icon('box', 28) %>
+        </div>
+        <div>
+          <div style="font-size: 12px; color: var(--gray-500); text-transform: uppercase; font-weight: 700;">Total Inventory</div>
+          <div style="font-size: 24px; font-weight: 700; color: var(--navy);"><%= stats.products %></div>
+        </div>
+      </div>
+
+      <div class="stat-card-admin">
+        <div style="color: var(--teal); background: var(--teal-subtle); width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+          <%- icon('grid', 28) %>
+        </div>
+        <div>
+          <div style="font-size: 12px; color: var(--gray-500); text-transform: uppercase; font-weight: 700;">Categories</div>
+          <div style="font-size: 24px; font-weight: 700; color: var(--navy);"><%= stats.categories %></div>
+        </div>
+      </div>
+
+      <div class="stat-card-admin">
+        <div style="color: #ffb703; background: rgba(255, 183, 3, 0.15); width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+          <%- icon('starFilled', 28) %>
+        </div>
+        <div>
+          <div style="font-size: 12px; color: var(--gray-500); text-transform: uppercase; font-weight: 700;">Customer Reviews</div>
+          <div style="font-size: 24px; font-weight: 700; color: var(--navy);"><%= stats.reviews %></div>
+        </div>
+      </div>
+
+      <div class="stat-card-admin">
+        <div style="color: var(--whatsapp); background: rgba(37, 211, 102, 0.15); width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+          <%- icon('messageSquare', 28) %>
+        </div>
+        <div>
+          <div style="font-size: 12px; color: var(--gray-500); text-transform: uppercase; font-weight: 700;">Customer Inquiries</div>
+          <div style="font-size: 24px; font-weight: 700; color: var(--navy);"><%= stats.inquiries %></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Split Grid: Recent Products & Inquiries -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+      
+      <!-- Recent Inventory Updates -->
+      <div style="background: #fff; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h3 style="font-size: 18px; font-weight: 700;">Latest Added Accessories</h3>
+          <a href="/admin/products" class="btn btn-outline-dark btn-sm">Manage All</a>
+        </div>
+
+        <% if (recentProducts && recentProducts.length > 0) { %>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <% recentProducts.forEach(p => { %>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid var(--gray-200);">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <img src="<%= p.image_url %>" alt="" style="width: 40px; height: 40px; border-radius: 6px; object-fit: cover;">
+                  <div>
+                    <div style="font-size: 13.5px; font-weight: 600;"><%= p.name %></div>
+                    <div style="font-size: 11.5px; color: var(--gray-500);"><%= p.category_name || 'Accessory' %> · ₹<%= p.price %></div>
+                  </div>
+                </div>
+                <a href="/admin/products/edit/<%= p.id %>" class="btn btn-outline-dark btn-sm">Edit</a>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <p style="color: var(--gray-500); font-size: 13px;">No accessories added yet.</p>
+        <% } %>
+      </div>
+
+      <!-- Recent Inquiries -->
+      <div style="background: #fff; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h3 style="font-size: 18px; font-weight: 700;">Recent Inquiries & Leads</h3>
+          <a href="/admin/inquiries" class="btn btn-outline-dark btn-sm">View All</a>
+        </div>
+
+        <% if (recentInquiries && recentInquiries.length > 0) { %>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <% recentInquiries.forEach(inq => { %>
+              <div style="padding-bottom: 12px; border-bottom: 1px solid var(--gray-200);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <strong><%= inq.customer_name %></strong>
+                  <span class="badge <%= inq.status === 'resolved' ? 'badge-new' : 'badge-hot' %>"><%= inq.status %></span>
+                </div>
+                <div style="font-size: 12.5px; color: var(--gray-600); margin-bottom: 6px;"><%= inq.product_name || inq.message %></div>
+                <a href="https://wa.me/<%= inq.phone.replace(/[^0-9]/g, '') %>" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm" style="padding: 4px 10px; font-size: 11.5px;">
+                  <%- icon('whatsapp', 12) %> WhatsApp <%= inq.phone %>
+                </a>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <p style="color: var(--gray-500); font-size: 13px;">No pending inquiries at the moment.</p>
+        <% } %>
+      </div>
+
+    </div>
+  </div>
+</section>

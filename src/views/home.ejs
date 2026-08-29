@@ -1,0 +1,318 @@
+<!-- Hero Showcase Section with Dynamic Responsive Layout -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <!-- Hero Text Content -->
+      <div class="hero-content">
+        <div class="hero-tag">
+          <span class="hero-tag-icon"><%- icon('zap', 14) %></span>
+          <span>AECS Layout Showroom · Opposite Kanti Sweets</span>
+        </div>
+        
+        <h1 class="hero-title">
+          Upgrade Your Phone With <span class="text-gradient">Next-Gen</span> Accessories
+        </h1>
+        
+        <p class="hero-desc">
+          Bengaluru's go-to destination for precision 11D tempered glass installation, GaN ultra-fast chargers, military-grade MagSafe armor cases, and authentic Bluetooth audio accessories.
+        </p>
+        
+        <!-- Action Buttons -->
+        <div class="hero-cta-group">
+          <a href="/products" class="btn btn-orange btn-lg" id="hero-browse-btn">
+            Explore All Accessories <%- icon('arrowRight', 16) %>
+          </a>
+          <a href="https://wa.me/<%= settings.store_whatsapp || '919876543210' %>?text=<%= encodeURIComponent('Hi Tech Talk Mobile! I want to check accessories and screen guards for my phone model.') %>"
+             class="btn btn-whatsapp btn-lg" 
+             target="_blank" 
+             rel="noopener"
+             id="hero-whatsapp-btn">
+            <%- icon('whatsapp', 18) %> Check Phone Model on WhatsApp
+          </a>
+        </div>
+        
+        <!-- Trust Metrics -->
+        <div class="hero-stats">
+          <div class="stat-box">
+            <div class="stat-val">
+              5.0 <span class="stat-star"><%- icon('starFilled', 16) %></span>
+            </div>
+            <div class="stat-lbl">Google Verified</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">100%</div>
+            <div class="stat-lbl">Free Fitting</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">500+</div>
+            <div class="stat-lbl">Phone Models</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">65W</div>
+            <div class="stat-lbl">GaN Fast Charge</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual Card with Generated Image & Store Badge -->
+      <div class="hero-media-wrapper">
+        <div class="hero-banner-card">
+          <div class="hero-img-container">
+            <img src="/images/hero-banner.png" 
+                 alt="Tech Talk Mobile Accessories Showroom AECS Layout Brookefield" 
+                 class="hero-banner-img" 
+                 loading="eager"
+                 fetchpriority="high">
+            <div class="hero-banner-overlay"></div>
+            
+            <!-- Live Open Badge -->
+            <div class="hero-floating-badge">
+              <span class="live-pulse-dot"></span>
+              <span>Open Today · 9 AM – 8 PM</span>
+            </div>
+          </div>
+
+          <!-- Quick Action Drawer inside Card -->
+          <div class="hero-card-details">
+            <div class="hero-card-header">
+              <div>
+                <div class="hero-card-sub"><%- icon('mapPin', 14) %> AECS Layout · Brookefield</div>
+                <h3 class="hero-card-title"><%= settings.store_name || 'Tech Talk Mobile' %></h3>
+              </div>
+              <a href="tel:<%= (settings.store_phone || '+919876543210').replace(/\s+/g, '') %>" 
+                 class="btn btn-icon-only btn-orange" 
+                 title="Call Now"
+                 aria-label="Call Tech Talk Mobile">
+                <%- icon('phone', 18) %>
+              </a>
+            </div>
+
+            <p class="hero-card-address">
+              <%= settings.store_address || 'Opposite Kanti Sweets, B Block, AECS Layout, Brookefield, Bengaluru – 560037' %>
+            </p>
+
+            <div class="hero-card-actions">
+              <a href="<%= settings.google_maps_url || 'https://maps.google.com/?q=AECS+Layout+Brookefield+Bengaluru+opposite+Kanti+Sweets' %>"
+                 class="btn btn-outline btn-sm" 
+                 target="_blank" 
+                 rel="noopener">
+                <%- icon('mapPin', 14) %> Google Maps Directions
+              </a>
+              <a href="/contact" class="btn btn-dark-glass btn-sm">
+                Store Info <%- icon('arrowRight', 12) %>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mobile Horizontal Category Tray & Desktop Grid -->
+<section class="section section-categories">
+  <div class="container">
+    <div class="section-header-flex">
+      <div>
+        <div class="section-eyebrow">Explore Collections</div>
+        <h2 class="section-title">Popular Accessory Categories</h2>
+      </div>
+      <a href="/products" class="view-all-link">
+        View Full Catalog <%- icon('arrowRight', 14) %>
+      </a>
+    </div>
+
+    <!-- Category Scroller (Touch-Draggable on Mobile, Grid on Desktop) -->
+    <div class="category-scroll-tray">
+      <% if (categories && categories.length > 0) { %>
+        <% categories.forEach(cat => { %>
+          <a href="/category/<%= cat.slug %>" class="category-item-card" id="cat-card-<%= cat.slug %>">
+            <div class="category-img-badge">
+              <img src="<%= cat.image_url || '/images/hero-banner.png' %>" alt="<%= cat.name %>" loading="lazy">
+              <div class="category-icon-pill">
+                <%- icon(cat.icon || 'smartphone', 20) %>
+              </div>
+            </div>
+            <div class="category-item-info">
+              <div class="category-item-title"><%= cat.name %></div>
+              <div class="category-item-desc"><%= cat.description %></div>
+            </div>
+            <div class="category-item-arrow">
+              <%- icon('arrowRight', 14) %>
+            </div>
+          </a>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Bestselling Products Section (2-Col App Grid on Mobile) -->
+<section class="section section-featured" style="background: var(--bg-alt);">
+  <div class="container">
+    <div class="section-header-flex">
+      <div>
+        <div class="section-eyebrow">Top Recommendations</div>
+        <h2 class="section-title">Bestselling In-Store Picks</h2>
+      </div>
+      <span class="stock-verified-tag">
+        <%- icon('check', 14) %> 100% In-Stock & Ready for Fitting
+      </span>
+    </div>
+
+    <div class="product-grid">
+      <% if (featuredProducts && featuredProducts.length > 0) { %>
+        <% featuredProducts.forEach(prod => { %>
+          <div class="product-card" id="prod-card-<%= prod.id %>">
+            <div class="product-img-wrap">
+              <% if (prod.badge) { %>
+                <div class="product-badge-pos">
+                  <span class="badge badge-<%= prod.badge.toLowerCase() %>"><%= prod.badge %></span>
+                </div>
+              <% } %>
+              
+              <a href="/products/<%= prod.slug || prod.id %>" class="product-img-link">
+                <img src="<%= prod.image_url || '/images/hero-banner.png' %>" 
+                     alt="<%= prod.name %>" 
+                     loading="lazy" 
+                     class="product-thumb">
+              </a>
+              
+              <% if (prod.category_name) { %>
+                <span class="product-cat-tag"><%= prod.category_name %></span>
+              <% } %>
+            </div>
+
+            <div class="product-body">
+              <h3 class="product-name">
+                <a href="/products/<%= prod.slug || prod.id %>"><%= prod.name %></a>
+              </h3>
+              
+              <p class="product-desc"><%= prod.description %></p>
+
+              <!-- Price & Discount Tag Row -->
+              <div class="product-price-row">
+                <div class="price-wrap">
+                  <span class="price-current">₹<%= Number(prod.price).toLocaleString('en-IN') %></span>
+                  <% if (prod.original_price && Number(prod.original_price) > Number(prod.price)) { %>
+                    <span class="price-original">₹<%= Number(prod.original_price).toLocaleString('en-IN') %></span>
+                    <% const discount = Math.round(((Number(prod.original_price) - Number(prod.price)) / Number(prod.original_price)) * 100); %>
+                    <span class="price-discount-badge"><%= discount %>% OFF</span>
+                  <% } %>
+                </div>
+                
+                <div class="stock-indicator <%= prod.in_stock ? 'in-stock' : 'out-stock' %>">
+                  <span class="stock-dot"></span>
+                  <span><%= prod.in_stock ? 'In Stock' : 'Out of Stock' %></span>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="product-action-row">
+                <a href="/products/<%= prod.slug || prod.id %>" class="btn btn-outline btn-sm product-view-btn">
+                  Details
+                </a>
+                <a href="https://wa.me/<%= settings.store_whatsapp || '919876543210' %>?text=<%= encodeURIComponent('Hi Tech Talk Mobile, I want to check availability and buy: ' + prod.name + ' (₹' + prod.price + ')') %>"
+                   class="btn btn-whatsapp btn-sm product-wa-btn" 
+                   target="_blank" 
+                   rel="noopener"
+                   title="Reserve on WhatsApp">
+                  <%- icon('whatsapp', 15) %> <span class="wa-btn-label">Enquire</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+
+    <div class="catalog-cta-wrap">
+      <a href="/products" class="btn btn-navy btn-lg">
+        Explore All 20+ Mobile Accessories <%- icon('arrowRight', 16) %>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Store Value Proposition & Trust Badges -->
+<section class="section section-trust">
+  <div class="container">
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="trust-icon" style="background: rgba(255, 122, 0, 0.12); color: var(--orange);">
+          <%- icon('shield', 28) %>
+        </div>
+        <h4 class="trust-title">Free Zero-Bubble Fitting</h4>
+        <p class="trust-desc">Our skilled technicians install edge-to-edge tempered glass and camera protectors flawlessly on-site.</p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-icon" style="background: rgba(0, 210, 180, 0.12); color: var(--teal);">
+          <%- icon('zap', 28) %>
+        </div>
+        <h4 class="trust-title">BIS Certified Fast Charging</h4>
+        <p class="trust-desc">Authentic GaN chips with built-in surge protection for blazing speeds without heating your battery.</p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-icon" style="background: rgba(37, 211, 102, 0.12); color: var(--whatsapp);">
+          <%- icon('whatsapp', 28) %>
+        </div>
+        <h4 class="trust-title">Real-Time WhatsApp Support</h4>
+        <p class="trust-desc">Share your phone model for instantaneous price quotes, real photos, and reserved showroom pickup.</p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-icon" style="background: rgba(255, 184, 108, 0.15); color: var(--orange-light);">
+          <%- icon('mapPin', 28) %>
+        </div>
+        <h4 class="trust-title">Prime AECS Layout Location</h4>
+        <p class="trust-desc">Conveniently situated right opposite Kanti Sweets in B Block with easy walk-in access and vehicle parking.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Verified Customer Reviews Section -->
+<section class="section section-reviews" style="background: var(--bg-card);">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">Google Verified 5.0 Rating</div>
+      <h2 class="section-title">What Our Customers Say</h2>
+      <p class="section-subtitle">Real experiences from Bengaluru residents and AECS Layout tech lovers.</p>
+    </div>
+
+    <div class="reviews-grid">
+      <% if (reviews && reviews.length > 0) { %>
+        <% reviews.slice(0, 3).forEach(rev => { %>
+          <div class="review-card">
+            <div class="review-header">
+              <div class="review-stars">
+                <% for(let i=0; i<rev.rating; i++) { %>
+                  <%- icon('starFilled', 16) %>
+                <% } %>
+              </div>
+              <span class="review-source"><%= rev.source || 'Google Review' %></span>
+            </div>
+            
+            <p class="review-text">"<%= rev.comment %>"</p>
+            
+            <div class="review-author">
+              <div class="review-avatar"><%= (rev.author_name || 'Customer').charAt(0) %></div>
+              <div>
+                <div class="review-author-name"><%= rev.author_name || 'Verified Customer' %></div>
+                <div class="review-date"><%= rev.review_date || 'Verified Customer' %></div>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+
+    <div class="reviews-cta-wrap">
+      <a href="/reviews" class="btn btn-outline-dark">
+        Read All Verified Google Reviews <%- icon('arrowRight', 14) %>
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,131 @@
+<!-- Reviews Landing Page -->
+<section class="section" style="background: var(--navy); padding: 3rem 1.5rem 2rem; color: #fff;">
+  <div class="container">
+    <div class="section-eyebrow" style="color: var(--orange-light)">Verified Customer Feedback</div>
+    <h1 style="color:#fff; font-size: clamp(26px, 4vw, 36px); margin-bottom: 0.5rem;">
+      Customer Reviews & Ratings
+    </h1>
+    <p style="color: rgba(255,255,255,0.7); font-size: 14px; max-width: 600px;">
+      Read genuine reviews from customer visits to our Brookefield, AECS Layout mobile store. We pride ourselves on transparent pricing and friendly support.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <% if (typeof successMsg !== 'undefined' && successMsg) { %>
+      <div class="alert alert-success">
+        <span style="display:inline-flex; align-items:center; gap:6px;">
+          <%- icon('check', 16) %> <%= successMsg %>
+        </span>
+      </div>
+    <% } %>
+
+    <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; margin-bottom: 4rem; align-items: start;">
+      
+      <!-- Rating Summary Breakdown -->
+      <div style="background: #fff; padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm);">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <div style="font-family: 'Space Grotesk', sans-serif; font-size: 54px; font-weight: 800; color: var(--navy); line-height: 1;">
+            <%= averageRating %>
+          </div>
+          <div style="color: #ffb703; font-size: 20px; margin: 8px 0; display: flex; justify-content: center; gap: 4px;">
+            <%- icon('starFilled', 20) %>
+            <%- icon('starFilled', 20) %>
+            <%- icon('starFilled', 20) %>
+            <%- icon('starFilled', 20) %>
+            <%- icon('starFilled', 20) %>
+          </div>
+          <div style="font-size: 13.5px; color: var(--gray-500); font-weight: 500;">
+            Based on <%= totalCount %> verified customer ratings
+          </div>
+          <div style="display: inline-block; margin-top: 10px; background: rgba(37, 211, 102, 0.12); color: #167a39; padding: 4px 12px; border-radius: var(--radius-full); font-size: 12px; font-weight: 700;">
+            100% Recommended Store in AECS Layout
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <% [5, 4, 3, 2, 1].forEach(star => { 
+               const count = ratingCounts[star] || 0;
+               const pct = totalCount > 0 ? Math.round((count / totalCount) * 100) : (star === 5 ? 100 : 0);
+          %>
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 13px;">
+              <span style="width: 55px; font-weight: 600;"><%= star %> Star</span>
+              <div style="flex: 1; height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: <%= pct %>%; background: #ffb703; border-radius: 4px;"></div>
+              </div>
+              <span style="width: 35px; text-align: right; color: var(--gray-500);"><%= count %></span>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+
+      <!-- Write a Review Form -->
+      <div class="form-card">
+        <div class="section-eyebrow">Share Your Experience</div>
+        <h3 class="section-title" style="font-size: 20px; margin-bottom: 6px;">Leave a Store Review</h3>
+        <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 1.5rem;">
+          Did you visit our showroom or get a tempered glass fitted? Let others know about your experience.
+        </p>
+
+        <form action="/reviews" method="POST">
+          <div class="form-group">
+            <label class="form-label" for="author_name">Your Name</label>
+            <input type="text" id="author_name" name="author_name" class="form-input" placeholder="e.g. Ramesh Kumar (Brookefield)" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Your Rating</label>
+            <input type="hidden" name="rating" id="rating_input" value="5">
+            <div id="star-rating-container" style="display: flex; gap: 6px; cursor: pointer;">
+              <button type="button" class="rating-star-btn" data-value="1" style="background:none; border:none; padding:0; cursor:pointer; color:#ffb703;"><%- icon('starFilled', 24) %></button>
+              <button type="button" class="rating-star-btn" data-value="2" style="background:none; border:none; padding:0; cursor:pointer; color:#ffb703;"><%- icon('starFilled', 24) %></button>
+              <button type="button" class="rating-star-btn" data-value="3" style="background:none; border:none; padding:0; cursor:pointer; color:#ffb703;"><%- icon('starFilled', 24) %></button>
+              <button type="button" class="rating-star-btn" data-value="4" style="background:none; border:none; padding:0; cursor:pointer; color:#ffb703;"><%- icon('starFilled', 24) %></button>
+              <button type="button" class="rating-star-btn" data-value="5" style="background:none; border:none; padding:0; cursor:pointer; color:#ffb703;"><%- icon('starFilled', 24) %></button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="comment">Your Feedback</label>
+            <textarea id="comment" name="comment" class="form-textarea" placeholder="Tell us about the accessories you bought, fitting quality, or customer service..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-orange" style="width: 100%;">
+            <%- icon('check', 16) %> Submit Review
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- All Reviews List -->
+    <div>
+      <h2 style="font-size: 22px; margin-bottom: 1.5rem;">Recent Customer Testimonials</h2>
+      <div class="reviews-grid">
+        <% if (reviews && reviews.length > 0) { %>
+          <% reviews.forEach(rev => { %>
+            <div class="review-card">
+              <div class="review-header">
+                <div class="review-stars" style="display: flex; gap: 2px;">
+                  <% for(let i=0; i<rev.rating; i++) { %>
+                    <%- icon('starFilled', 15) %>
+                  <% } %>
+                </div>
+                <span class="review-source"><%= rev.source || 'Google Review' %></span>
+              </div>
+              <p class="review-text">"<%= rev.comment %>"</p>
+              <div class="review-author">
+                <div class="review-avatar"><%= (rev.author_name || 'Customer').charAt(0) %></div>
+                <div>
+                  <div class="review-author-name"><%= rev.author_name || 'Customer' %></div>
+                  <div class="review-date"><%= rev.review_date || 'Verified Review' %></div>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
